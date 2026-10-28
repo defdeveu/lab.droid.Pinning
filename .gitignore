@@ -6,6 +6,6 @@ captures/
 .cxx
 local.properties
 
-.idea/
+.idea
 *.iml
 *.hprof

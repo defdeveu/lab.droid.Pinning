@@ -1,12 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pinning</string>
-    <string name="download">Download</string>
-    <string name="downloaded_text">Downloaded text</string>
-    <string name="letsencrypt">Letsencrypt</string>
-    <string name="custom_ca">Custom CA</string>
-    <string name="plain_text">Plain text</string>
-
-    <string name="url_plain">http://zs.labs.defdev.eu/success.html</string>
-    <string name="url_defdev">https://zs2.labs.defdev.eu:444/success.html</string>
-    <string name="url_lestencrypt">https://zs.labs.defdev.eu/success.html</string>
+    <string name="pinning_title">Pinned by the platform</string>
+    <string name="pinning_supporting">Transport security is narrowed in the network security configuration: the system accepts a connection to %1$s only when the chain it presents contains one of the configured authority keys.</string>
+    <string name="section_pinned_identities">Pinned identities</string>
+    <string name="placeholder_pinned_identities">No pinned set is configured.</string>
+    <string name="pinned_identities_note">The system matches these digests against the certificates in the chain the server presents; further entries act as backups.</string>
+    <string name="section_status">Status</string>
+    <string name="section_last_attempt">Last attempt</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_connecting">Connecting…</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_failed">Failed</string>
+    <string name="placeholder_last_attempt">Not run yet.</string>
+    <string name="configuration_error">Configuration error: %1$s</string>
+    <string name="error_invalid_configuration">The configured address or pin set is invalid.</string>
+    <string name="error_invalid_url">The configured address is not a valid URL.</string>
+    <string name="error_transport_failed">The server could not be reached.</string>
+    <string name="error_trust_failed">The server could not be trusted.</string>
+    <string name="error_server_status">The server returned HTTP status %1$d.</string>
 </resources>
