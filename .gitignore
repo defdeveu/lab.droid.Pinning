@@ -9,3 +9,6 @@ local.properties
 .idea
 *.iml
 *.hprof
+
+
+gradle-daemon-jvm.properties
