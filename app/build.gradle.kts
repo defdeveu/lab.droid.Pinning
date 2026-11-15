@@ -5,39 +5,42 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-val labProperties = rootProject.file("lab.local.properties")
-    .takeIf { it.exists() }
-    ?.let { file ->
-        Properties().apply { file.inputStream().use { stream -> load(stream) } }
-    }
+val labProperties = Properties().apply {
+    rootProject.file("lab.properties").inputStream().use { load(it) }
+    rootProject.file("lab.local.properties").takeIf { it.exists() }
+        ?.inputStream()?.use { load(it) }
+}
 
-fun labValue(key: String, default: String): String = labProperties?.getProperty(key) ?: default
+fun labValue(key: String, default: String = ""): String = labProperties.getProperty(key) ?: default
+
+fun literal(value: String): String = "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"")
+    .replace("\n", "\\n").replace("\r", "\\r") + "\""
 
 android {
-    namespace = "dev.def.lab.droid.pinning"
+    namespace = "defdev.labdroid.pinning"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "dev.def.lab.droid.pinning"
-        minSdk = 24
-        targetSdk = 37
+        applicationId = "defdev.labdroid.pinning"
+        minSdk = 30
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField(
             "String",
             "LAB_PINNING_URL",
-            "\"${labValue("lab.pinning.url", "https://zsk.labs.def.dev/pinning/success")}\"",
+            literal(labValue("lab.pinning.url")),
         )
         buildConfigField(
             "String",
             "LAB_CLEARTEXT_URL",
-            "\"${labValue("lab.cleartext.url", "http://zsk.labs.def.dev/pinning/success")}\"",
+            literal(labValue("lab.cleartext.url")),
         )
         buildConfigField(
             "String",
             "LAB_LEAF_PIN",
-            "\"${labValue("lab.leaf.pin", "sha256/PlnlvxfcGEEUs/29JFwFdOb2lQKErvisb/6LqfXrlOw=")}\"",
+            literal(labValue("lab.leaf.pin", "sha256/PlnlvxfcGEEUs/29JFwFdOb2lQKErvisb/6LqfXrlOw=")),
         )
     }
 

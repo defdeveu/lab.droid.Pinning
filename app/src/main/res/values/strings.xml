@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pinning</string>
-    <string name="pinning_title">Pinned by the platform</string>
+    <string name="app_name">Pinning Lab</string>
+    <string name="pinning_title">Certificate pinning</string>
     <string name="pinning_supporting">Connect to the training server and compare the identity it presents with the one this app expects.</string>
     <string name="section_expected_pin">Expected identity</string>
     <string name="section_served_pin">Identity served</string>

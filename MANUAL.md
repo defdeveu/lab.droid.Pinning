@@ -9,7 +9,7 @@ solution lives on `main.solution` and is compared after the session. Work on
 - Android Studio Rabbit (2026.2) or newer, with Android SDK platform 37 and
   build-tools 37.0.0
 - JDK 17 or newer; Android Studio's bundled JBR works
-- A device or emulator running Android 7.0 (API 24) or newer
+- A device or emulator running Android 11 (API 30) or newer
 - Network access to the training server
 
 ## 2. Build and install
@@ -21,34 +21,25 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ## 3. Run
 
-Launch **Pinning** and follow the trainer's exercise instructions.
+Launch **Pinning Lab** and follow the trainer's exercise instructions. The
+supplied `lab.properties` already configures the course endpoints; no local
+configuration file is required.
 
 ## 4. Pointing at a local server
 
-Do not create `lab.local.properties` unless the trainer instructs you to use a
-local server. The local edge serves a certificate for `localhost`, so keep that
-name and bridge the port instead of re-addressing the endpoint:
-
-```sh
-adb reverse tcp:8443 tcp:8443
-```
-
-With the bridge in place, copy `lab.local.properties.example` to
-`lab.local.properties`, point `lab.pinning.url` at
-`https://localhost:8443/pinning/success`, and set `lab.leaf.pin` to the value
-the trainer provides. Rebuild after changing the override, because it is read
-at build time. The bridge forwards the device or emulator's `localhost:8443`
-to the machine running `adb`, so the server must be listening there; when the
-server runs in a virtualised guest, forward its port to that machine first.
-
-The edge's root certificate must be trusted on the device or emulator
-(Settings → Security → Encryption & credentials → Install a certificate → CA
-certificate); debug builds admit user-installed CAs.
+This is an exceptional instructor setup. Only when the trainer requests it,
+create ignored `lab.local.properties` using the trainer's supplied values for
+`lab.pinning.url`, `lab.cleartext.url` and, when required, `lab.leaf.pin`.
+Sync, rebuild and reinstall after changing it. Remove that file and rebuild
+to return to the supplied course configuration. Follow the trainer's routing
+and certificate-setup instructions; an endpoint override does not configure
+a local server automatically.
 
 ## 5. Switching branches
 
-Both branches install under the same application id, so the installed app still
-belongs to the branch you left until you rebuild and reinstall:
+Both refined branches install as `defdev.labdroid.pinning`. Switching source
+branches does not update the installed app; rebuild and reinstall the selected
+branch before running it:
 
 ```sh
 git switch main.solution
@@ -61,7 +52,7 @@ Gradle Files** (or reopen the project) after a switch made outside the IDE.
 
 ## 6. Validated emulator setup
 
-The runtime rows were run against this setup:
+The earlier runtime rows used this setup:
 
 | Item | Value |
 | --- | --- |
@@ -71,8 +62,3 @@ The runtime rows were run against this setup:
 | ABI | arm64-v8a |
 | Build | `BE2A.250530.026.D1` |
 | Emulator | reachable over adb as `emulator-5554`; the emulator console is not exposed on this connection, so the emulator build is not readable from here |
-
-This workspace's SDK also carries the API 37 Play arm64 image
-(`system-images;android-37.0;google_apis_playstore;arm64-v8a`) and the local
-emulator binary 37.2.12.0, which is the intended target once a local emulator
-can run.
