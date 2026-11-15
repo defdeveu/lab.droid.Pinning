@@ -49,16 +49,3 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Android Studio can keep files from the branch you left; run **Sync Project with
 Gradle Files** (or reopen the project) after a switch made outside the IDE.
-
-## 6. Validated emulator setup
-
-The earlier runtime rows used this setup:
-
-| Item | Value |
-| --- | --- |
-| AVD | `Pixel_9_API36_Play` |
-| System image | Google Play arm64 image for API 36, product `sdk_gphone64_arm64` (Play Store present) |
-| API / extension level | 36 (Android 16) / SDK extensions 17 |
-| ABI | arm64-v8a |
-| Build | `BE2A.250530.026.D1` |
-| Emulator | reachable over adb as `emulator-5554`; the emulator console is not exposed on this connection, so the emulator build is not readable from here |
