@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pinning</string>
+    <string name="app_name">Pinning Lab</string>
     <string name="pinning_title">Pinned by the platform</string>
     <string name="pinning_supporting">Transport security is narrowed in the network security configuration: the system accepts a connection to %1$s only when the chain it presents contains one of the configured authority keys.</string>
     <string name="section_pinned_identities">Pinned identities</string>

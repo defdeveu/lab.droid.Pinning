@@ -1,15 +1,16 @@
 # Pinning lab — run steps
 
 This branch is the trainer's reference solution; the exercise runs on the
-default `main.challenge` branch. The solution is hosted-only: the endpoint is
-committed and there is no local override.
+default `main.challenge` branch. The course server is configured in the
+supplied `lab.properties`; build and run normally without creating a local
+configuration file.
 
 ## 1. Prerequisites
 
 - Android Studio Rabbit (2026.2) or newer, with Android SDK platform 37 and
   build-tools 37.0.0
 - JDK 17 or newer; Android Studio's bundled JBR works
-- A device or emulator running Android 7.0 (API 24) or newer
+- A device or emulator running Android 11 (API 30) or newer
 - Network access to the training server
 
 ## 2. Build and install
@@ -21,14 +22,17 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ## 3. Run
 
-1. Launch **Pinning**.
+1. Launch **Pinning Lab**.
 2. Read the **Pinned identities** pane.
 3. Press **Connect** and read the **Status** and **Last attempt** panes.
 
 ## 4. Switching branches
 
-Both branches install under the same application id, so the installed app still
-belongs to the branch you left until you rebuild and reinstall:
+This branch installs as `defdev.labdroid.pinning`. Switching source branches
+does not update the installed app. Rebuild and reinstall the selected branch,
+then launch the app you just built. If differently named Pinning apps are
+installed side by side, use the selected branch's application ID from
+`app/build.gradle.kts` to identify it.
 
 ```sh
 git switch main.challenge
@@ -41,7 +45,7 @@ Gradle Files** (or reopen the project) after a switch made outside the IDE.
 
 ## 5. Validated emulator setup
 
-The runtime rows were run against this setup:
+The earlier runtime rows used this setup:
 
 | Item | Value |
 | --- | --- |
@@ -52,7 +56,11 @@ The runtime rows were run against this setup:
 | Build | `BE2A.250530.026.D1` |
 | Emulator | reachable over adb as `emulator-5554`; the emulator console is not exposed on this connection, so the emulator build is not readable from here |
 
-This workspace's SDK also carries the API 37 Play arm64 image
-(`system-images;android-37.0;google_apis_playstore;arm64-v8a`) and the local
-emulator binary 37.2.12.0, which is the intended target once a local emulator
-can run.
+## 6. Alternative endpoint (exceptional instructor setup)
+
+Only on explicit instructor direction, create ignored `lab.local.properties`
+with `lab.pinning.url=THE_HTTPS_URL`, then sync, rebuild and reinstall. Remove
+that file and rebuild to return to the supplied course configuration. Follow
+the instructor's server-specific setup; an endpoint override does not configure
+a different server automatically. An invalid setup disables Connect and shows
+the configuration error.

@@ -1,23 +1,34 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
 
+val labProperties = Properties().apply {
+    rootProject.file("lab.properties").inputStream().use { load(it) }
+    rootProject.file("lab.local.properties").takeIf { it.exists() }
+        ?.inputStream()?.use { load(it) }
+}
+val pinnedUrl = labProperties.getProperty("lab.pinning.url").orEmpty()
+val endpointLiteral = "\"" + pinnedUrl.replace("\\", "\\\\").replace("\"", "\\\"")
+    .replace("\n", "\\n").replace("\r", "\\r") + "\""
+
 android {
-    namespace = "dev.def.lab.droid.pinning"
+    namespace = "defdev.labdroid.pinning"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "dev.def.lab.droid.pinning"
-        minSdk = 24
-        targetSdk = 37
+        applicationId = "defdev.labdroid.pinning"
+        minSdk = 30
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField(
             "String",
             "LAB_PINNING_URL",
-            "\"https://zsk.labs.def.dev/pinning/success\"",
+            endpointLiteral,
         )
     }
 

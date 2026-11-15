@@ -8,8 +8,10 @@ connects to the training server over TLS and reports the result.
 - Android Studio Rabbit (2026.2) or newer
 - JDK 17 or newer (Android Studio's bundled JBR works)
 - Android SDK platform 37 and build-tools 37.0.0
-- A device or emulator running Android 7.0 (API 24) or newer
+- A device or emulator running Android 11 (API 30) or newer
 - Network access to the training server
+
+The app targets Android 15 (API 35).
 
 ## Build and install
 
@@ -27,8 +29,8 @@ Or open the project in Android Studio and run the `app` configuration.
 
 ## Endpoint
 
-The app uses the hosted training server. The endpoint and the pin set are
-committed in the repository; there is no local override.
+The course server is configured in the supplied `lab.properties`. Normal
+course use needs no local configuration file or endpoint setup.
 
 ## Tests
 
@@ -42,3 +44,9 @@ initial render and the committed configuration:
 ```sh
 ./gradlew connectedDebugAndroidTest
 ```
+
+## Font and icon licenses
+
+Bundled variable fonts and their licenses are listed in
+`app/src/main/assets/licenses/fonts.txt`. The network icon attribution is in
+`app/src/main/assets/licenses/material-symbols.txt`.
