@@ -17,16 +17,21 @@ fun literal(value: String): String = "\"" + value.replace("\\", "\\\\").replace(
     .replace("\n", "\\n").replace("\r", "\\r") + "\""
 
 android {
-    namespace = "defdev.labdroid.pinning"
+    namespace = "defdev.labs.droid.pinning"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "defdev.labdroid.pinning"
+        applicationId = "defdev.labs.droid.pinning"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField(
+            "String",
+            "LAB_SOLUTION_URL",
+            literal(labValue("lab.solution.url")),
+        )
         buildConfigField(
             "String",
             "LAB_PINNING_URL",
@@ -79,6 +84,7 @@ tasks.withType<JavaCompile>().configureEach {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.core.ktx)
@@ -86,6 +92,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.okhttp)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

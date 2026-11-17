@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pinning Lab</string>
-    <string name="pinning_title">Certificate pinning</string>
+    <string name="flow_challenge_title">Challenge</string>
+    <string name="flow_solution_title">Solution</string>
+    <string name="flow_challenge_marker">C</string>
+    <string name="flow_solution_marker">S</string>
+    <string name="action_cancel_request">Cancel request</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="solution_supporting">Transport security is narrowed in the network security configuration: the system accepts a connection to %1$s only when the chain it presents contains one of the configured authority keys.</string>
+    <string name="section_pinned_identities">Pinned identities</string>
+    <string name="placeholder_pinned_identities">No pinned set is configured.</string>
+    <string name="pinned_identities_note">The system matches these digests against the certificates in the chain the server presents; further entries act as backups.</string>
     <string name="pinning_supporting">Connect to the training server and compare the identity it presents with the one this app expects.</string>
     <string name="section_expected_pin">Expected identity</string>
     <string name="section_served_pin">Identity served</string>
     <string name="section_status">Status</string>
     <string name="section_last_attempt">Last attempt</string>
     <string name="action_connect">Connect</string>
-    <string name="action_connecting">Connecting…</string>
     <string name="action_break_pin">Break the pin</string>
     <string name="action_restore_pin">Restore the pin</string>
     <string name="action_try_cleartext">Try cleartext</string>

@@ -1,11 +1,11 @@
-package defdev.labdroid.pinning.theme
+package defdev.labs.droid.pinning.theme
 
 import androidx.annotation.FontRes
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
-import defdev.labdroid.pinning.R
+import defdev.labs.droid.pinning.R
 
 val LabSans = variableFontFamily(R.font.noto_sans_variable, 400, 500, 700)
 val LabMono = variableFontFamily(R.font.noto_sans_mono_variable, 400)

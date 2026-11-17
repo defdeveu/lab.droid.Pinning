@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.crypto
+package defdev.labs.droid.pinning.flows.challenge
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

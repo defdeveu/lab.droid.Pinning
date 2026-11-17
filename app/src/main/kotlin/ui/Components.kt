@@ -1,5 +1,6 @@
-package defdev.labdroid.pinning.ui
+package defdev.labs.droid.pinning.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import defdev.labdroid.pinning.R
-import defdev.labdroid.pinning.theme.LabMono
-import defdev.labdroid.pinning.theme.LabTitle
+import defdev.labs.droid.pinning.R
+import defdev.labs.droid.pinning.theme.LabMono
+import defdev.labs.droid.pinning.theme.LabTitle
 
 @Composable
 fun LabHeader() {
@@ -103,20 +104,11 @@ fun PrimaryAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isRunning: Boolean = false,
 ) {
     val height = 56.dp
     Button(
         onClick = onClick,
-        enabled = enabled && !isRunning,
-        colors = if (isRunning) {
-            ButtonDefaults.buttonColors(
-                disabledContainerColor = MaterialTheme.colorScheme.primary,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimary,
-            )
-        } else {
-            ButtonDefaults.buttonColors()
-        },
+        enabled = enabled,
         shapes = ButtonDefaults.shapes(
             shape = MaterialTheme.shapes.large,
             pressedShape = ButtonDefaults.mediumPressedShape,
@@ -127,7 +119,7 @@ fun PrimaryAction(
             .heightIn(min = height),
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_network),
+            painter = painterResource(R.drawable.ic_globe),
             contentDescription = null,
             modifier = Modifier.size(ButtonDefaults.MediumIconSize),
         )
@@ -142,14 +134,24 @@ fun SecondaryAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    @DrawableRes icon: Int? = null,
 ) {
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
+        contentPadding = if (icon != null) ButtonDefaults.ButtonWithIconContentPadding else ButtonDefaults.ContentPadding,
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 52.dp),
     ) {
+        if (icon != null) {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+        }
         Text(text = label)
     }
 }

@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.theme
+package defdev.labs.droid.pinning.theme
 
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme

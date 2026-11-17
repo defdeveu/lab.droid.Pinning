@@ -1,12 +1,10 @@
-package defdev.labdroid.pinning
+package defdev.labs.droid.pinning.flows.challenge
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import defdev.labdroid.pinning.crypto.PinChecker
-import defdev.labdroid.pinning.error.LabError
-import defdev.labdroid.pinning.error.LabFailure
-import defdev.labdroid.pinning.service.PinningService
-import defdev.labdroid.pinning.store.PinStore
+import defdev.labs.droid.pinning.PinStatus
+import defdev.labs.droid.pinning.error.LabError
+import defdev.labs.droid.pinning.error.LabFailure
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,8 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-enum class PinStatus { READY, CONNECTING, CONNECTED, FAILED }
 
 data class PinningUiState(
     val expectedPin: String,
@@ -60,13 +56,23 @@ class PinningViewModel(
     }
 
     fun breakPin() {
+        if (mutableUiState.value.isRunning) return
         mutableUiState.update { it.copy(expectedPin = PinChecker.mangle(pinnedPin)) }
         store.setBroken(true)
     }
 
     fun restorePin() {
+        if (mutableUiState.value.isRunning) return
         mutableUiState.update { it.copy(expectedPin = pinnedPin) }
         store.setBroken(false)
+    }
+
+    fun cancel() {
+        if (!mutableUiState.value.isRunning) return
+        mutableUiState.update {
+            it.copy(operationId = it.operationId + 1, status = PinStatus.CANCELLED, error = null)
+        }
+        operation?.cancel()
     }
 
     private fun fetch(url: String) {
@@ -107,7 +113,7 @@ class PinningViewModel(
         }
     }
 
-    private fun describe(fetched: defdev.labdroid.pinning.service.FetchResult): String {
+    private fun describe(fetched: FetchResult): String {
         val upgrade = fetched.upgradedFrom?.let { "upgraded from $it\n" }.orEmpty()
         return upgrade + "HTTP ${fetched.status}\n" + fetched.body
     }

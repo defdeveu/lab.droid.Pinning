@@ -3,6 +3,9 @@
 Android teaching app for the "Development security in Android" course.
 The trainer provides the exercise instructions and expected outcomes.
 
+The maintained `main` contains Challenge and Solution cases, selected with
+the C/S rail. Source for each case lives in `app/src/main/kotlin/flows/`.
+
 ## Requirements
 
 - Android Studio Rabbit (2026.2) or newer
@@ -36,5 +39,5 @@ course use needs no local configuration file or endpoint setup.
 ## Font and icon licenses
 
 Bundled variable fonts and their licenses are listed in
-`app/src/main/assets/licenses/fonts.txt`. The network icon attribution is in
+`app/src/main/assets/licenses/fonts.txt`. Button icon attribution is in
 `app/src/main/assets/licenses/material-symbols.txt`.

@@ -1,3 +1,6 @@
-Material Symbols Rounded: lan.
-Source: https://github.com/google/material-design-icons/blob/master/symbols/web/lan/materialsymbolsrounded/lan_24px.svg
+Material Symbols Rounded: content_cut, undo, public.
+Sources:
+https://github.com/google/material-design-icons/blob/master/symbols/web/content_cut/materialsymbolsrounded/content_cut_24px.svg
+https://github.com/google/material-design-icons/blob/master/symbols/web/undo/materialsymbolsrounded/undo_24px.svg
+https://github.com/google/material-design-icons/blob/master/symbols/web/public/materialsymbolsrounded/public_24px.svg
 License: material-symbols.LICENSE.txt

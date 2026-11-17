@@ -1,8 +1,7 @@
-package defdev.labdroid.pinning.service
+package defdev.labs.droid.pinning.flows.challenge
 
-import defdev.labdroid.pinning.crypto.PinChecker
-import defdev.labdroid.pinning.error.LabError
-import defdev.labdroid.pinning.error.LabFailure
+import defdev.labs.droid.pinning.error.LabError
+import defdev.labs.droid.pinning.error.LabFailure
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -18,6 +17,12 @@ import javax.net.ssl.SSLPeerUnverifiedException
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509ExtendedTrustManager
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 data class FetchResult(
     val finalUrl: String,
@@ -28,11 +33,11 @@ data class FetchResult(
 )
 
 interface PinningService {
-    fun fetch(url: String, expectedPin: String): FetchResult
+    suspend fun fetch(url: String, expectedPin: String): FetchResult
 }
 
 class PlatformPinningService : PinningService {
-    override fun fetch(url: String, expectedPin: String): FetchResult {
+    override suspend fun fetch(url: String, expectedPin: String): FetchResult {
         val isCleartext = url.startsWith("http://")
         if (!isCleartext && !PinChecker.isWellFormed(expectedPin)) {
             throw LabFailure(LabError.PinNotConfigured)
@@ -50,23 +55,25 @@ class PlatformPinningService : PinningService {
         return result
     }
 
-    private fun request(url: String, expectedPin: String?): Response {
+    private suspend fun request(url: String, expectedPin: String?): Response = coroutineScope {
         val recorder = PinRecorder()
         val connection = open(url, expectedPin, recorder)
-        return try {
-            val status = connection.responseCode
-            val stream = if (status in 200..299) connection.inputStream else connection.errorStream
-            val body = stream?.use { it.readBytes().toString(Charsets.UTF_8) }.orEmpty()
-            Response(
-                status = status,
-                body = body,
-                location = connection.getHeaderField("Location"),
-                leafPin = recorder.pin,
-            )
-        } catch (failure: IOException) {
-            throw failure.toLabFailure()
-        } finally {
-            connection.disconnect()
+        suspendCancellableCoroutine { continuation ->
+            continuation.invokeOnCancellation { connection.disconnect() }
+            launch(Dispatchers.IO) {
+                try {
+                    if (!continuation.isActive) return@launch
+                    val status = connection.responseCode
+                    val stream = if (status in 200..299) connection.inputStream else connection.errorStream
+                    val body = stream?.use { it.readBytes().toString(Charsets.UTF_8) }.orEmpty()
+                    val response = Response(status, body, connection.getHeaderField("Location"), recorder.pin)
+                    if (continuation.isActive) continuation.resume(response)
+                } catch (failure: IOException) {
+                    if (continuation.isActive) continuation.resumeWithException(failure.toLabFailure())
+                } finally {
+                    connection.disconnect()
+                }
+            }
         }
     }
 

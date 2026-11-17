@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.store
+package defdev.labs.droid.pinning.flows.challenge
 
 import java.io.File
 

@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.config
+package defdev.labs.droid.pinning.config
 
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

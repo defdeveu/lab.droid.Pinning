@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.crypto
+package defdev.labs.droid.pinning.flows.challenge
 
 import java.security.MessageDigest
 import java.security.cert.X509Certificate

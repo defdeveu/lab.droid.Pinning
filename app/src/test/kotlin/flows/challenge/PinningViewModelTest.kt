@@ -1,13 +1,11 @@
-package defdev.labdroid.pinning
+package defdev.labs.droid.pinning.flows.challenge
 
-import defdev.labdroid.pinning.crypto.PinChecker
-import defdev.labdroid.pinning.error.LabError
-import defdev.labdroid.pinning.error.LabFailure
-import defdev.labdroid.pinning.service.FetchResult
-import defdev.labdroid.pinning.service.PinningService
-import defdev.labdroid.pinning.store.PinStore
+import defdev.labs.droid.pinning.PinStatus
+import defdev.labs.droid.pinning.error.LabError
+import defdev.labs.droid.pinning.error.LabFailure
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -154,6 +152,38 @@ class PinningViewModelTest {
         configurationError = configurationError,
     )
 
+    @Test
+    fun cancellingTheRequestKeepsTheExpectedIdentityAndAllowsRetry() = runTest(dispatcher) {
+        val service = WaitingService()
+        val viewModel = viewModel(service)
+        val expected = viewModel.uiState.value.expectedPin
+        viewModel.connect()
+        advanceUntilIdle()
+        assertTrue(viewModel.uiState.value.isRunning)
+
+        viewModel.cancel()
+        advanceUntilIdle()
+
+        assertTrue(service.cancelled)
+        assertEquals(PinStatus.CANCELLED, viewModel.uiState.value.status)
+        assertEquals(expected, viewModel.uiState.value.expectedPin)
+        viewModel.connect()
+        advanceUntilIdle()
+        assertEquals(2, service.calls)
+        viewModel.cancel()
+        advanceUntilIdle()
+    }
+
+    private class WaitingService : PinningService {
+        var cancelled = false
+        var calls = 0
+        override suspend fun fetch(url: String, expectedPin: String): FetchResult =
+            suspendCancellableCoroutine { continuation ->
+                calls++
+                continuation.invokeOnCancellation { cancelled = true }
+            }
+    }
+
     private class FakePinStore(var brokenValue: Boolean = false) : PinStore {
         override fun isBroken(): Boolean = brokenValue
 
@@ -171,7 +201,7 @@ class PinningViewModelTest {
         var lastExpectedPin = ""
             private set
 
-        override fun fetch(url: String, expectedPin: String): FetchResult {
+        override suspend fun fetch(url: String, expectedPin: String): FetchResult {
             calls++
             lastExpectedPin = expectedPin
             failure?.let { throw LabFailure(it) }

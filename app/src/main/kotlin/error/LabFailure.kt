@@ -1,3 +1,3 @@
-package defdev.labdroid.pinning.error
+package defdev.labs.droid.pinning.error
 
 class LabFailure(val reason: LabError) : Exception()

@@ -1,4 +1,4 @@
-package defdev.labdroid.pinning.error
+package defdev.labs.droid.pinning.error
 
 sealed class LabError {
     data object InvalidConfiguration : LabError()

@@ -1,12 +1,13 @@
-package defdev.labdroid.pinning
+package defdev.labs.droid.pinning
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
-import defdev.labdroid.pinning.theme.PinningTheme
-import defdev.labdroid.pinning.ui.PinningScreen
+import defdev.labs.droid.pinning.theme.PinningTheme
+import defdev.labs.droid.pinning.flows.challenge.PinningViewModel as ChallengeViewModel
+import defdev.labs.droid.pinning.flows.solution.PinningViewModel as SolutionViewModel
 
 class MainActivity : ComponentActivity() {
     private val container by lazy { AppContainer(applicationContext) }
@@ -16,8 +17,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PinningTheme {
-                val viewModel: PinningViewModel = viewModel(factory = container.viewModelFactory)
-                PinningScreen(viewModel = viewModel)
+                val challenge: ChallengeViewModel = viewModel(key = "challenge", factory = container.challengeFactory)
+                val solution: SolutionViewModel = viewModel(key = "solution", factory = container.solutionFactory)
+                PinningApp(challenge, solution)
             }
         }
     }
