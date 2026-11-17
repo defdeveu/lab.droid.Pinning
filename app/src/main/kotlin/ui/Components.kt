@@ -1,6 +1,5 @@
 package defdev.labs.droid.pinning.ui
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -134,24 +133,15 @@ fun SecondaryAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    @DrawableRes icon: Int? = null,
 ) {
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
-        contentPadding = if (icon != null) ButtonDefaults.ButtonWithIconContentPadding else ButtonDefaults.ContentPadding,
+        contentPadding = ButtonDefaults.ContentPadding,
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 52.dp),
     ) {
-        if (icon != null) {
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = null,
-                modifier = Modifier.size(ButtonDefaults.IconSize),
-            )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        }
         Text(text = label)
     }
 }

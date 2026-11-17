@@ -14,7 +14,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -48,54 +47,6 @@ class PinningViewModelTest {
         assertEquals("sha256/served", viewModel.uiState.value.leafPin)
         assertTrue(viewModel.uiState.value.result.contains("HTTP 200"))
         assertEquals(classroomPin, service.lastExpectedPin)
-    }
-
-    @Test
-    fun breakThenRestoreChangesTheExpectedIdentity() = runTest(dispatcher) {
-        val store = FakePinStore()
-        val viewModel = viewModel(store = store)
-
-        viewModel.breakPin()
-        assertNotEquals(classroomPin, viewModel.uiState.value.expectedPin)
-        assertTrue(store.brokenValue)
-
-        viewModel.restorePin()
-        assertEquals(classroomPin, viewModel.uiState.value.expectedPin)
-        assertFalse(store.brokenValue)
-    }
-
-    @Test
-    fun repeatedBreakKeepsTheSameBrokenPin() = runTest(dispatcher) {
-        val viewModel = viewModel()
-
-        viewModel.breakPin()
-        val first = viewModel.uiState.value.expectedPin
-        viewModel.breakPin()
-        val second = viewModel.uiState.value.expectedPin
-
-        assertEquals(first, second)
-        assertNotEquals(classroomPin, second)
-        assertEquals(PinChecker.mangle(classroomPin), second)
-    }
-
-    @Test
-    fun aStoredBrokenStateIsRestoredOnLaunch() = runTest(dispatcher) {
-        val viewModel = viewModel(store = FakePinStore(brokenValue = true))
-
-        assertEquals(PinChecker.mangle(classroomPin), viewModel.uiState.value.expectedPin)
-    }
-
-    @Test
-    fun theBrokenIdentityIsTheOneSentToTheServer() = runTest(dispatcher) {
-        val service = StubService()
-        val viewModel = viewModel(service)
-
-        viewModel.breakPin()
-        viewModel.connect()
-        advanceUntilIdle()
-
-        assertEquals(viewModel.uiState.value.expectedPin, service.lastExpectedPin)
-        assertNotEquals(classroomPin, service.lastExpectedPin)
     }
 
     @Test
@@ -140,11 +91,9 @@ class PinningViewModelTest {
 
     private fun viewModel(
         service: PinningService = StubService(),
-        store: PinStore = FakePinStore(),
         configurationError: LabError? = null,
     ) = PinningViewModel(
         service = service,
-        store = store,
         pinnedUrl = "https://lab/success",
         cleartextUrl = "http://lab/success",
         pinnedPin = classroomPin,
@@ -182,14 +131,6 @@ class PinningViewModelTest {
                 calls++
                 continuation.invokeOnCancellation { cancelled = true }
             }
-    }
-
-    private class FakePinStore(var brokenValue: Boolean = false) : PinStore {
-        override fun isBroken(): Boolean = brokenValue
-
-        override fun setBroken(broken: Boolean) {
-            brokenValue = broken
-        }
     }
 
     private class StubService(

@@ -13,7 +13,6 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.platform.app.InstrumentationRegistry
-import defdev.labs.droid.pinning.flows.challenge.PinStore
 import defdev.labs.droid.pinning.flows.solution.PinnedSet
 import defdev.labs.droid.pinning.theme.PinningTheme
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +43,7 @@ class PinningNavigationTest {
     private fun verifyCancellation(selectSolution: Boolean) {
         val challengeService = WaitingChallengeService()
         val solutionService = WaitingSolutionService()
-        val challenge = ChallengeViewModel(challengeService, MemoryStore(),
+        val challenge = ChallengeViewModel(challengeService,
             "https://lab.example/success", "http://lab.example/success", BuildConfig.LAB_LEAF_PIN, Dispatchers.Main)
         val solution = SolutionViewModel(solutionService, "https://other.example/success",
             PinnedSet("other.example", listOf("first", "second")), Dispatchers.Main)
@@ -68,12 +67,6 @@ class PinningNavigationTest {
         rule.runOnIdle {
             assertTrue(if (selectSolution) solutionService.cancelled else challengeService.cancelled)
         }
-    }
-
-    private class MemoryStore : PinStore {
-        private var broken = false
-        override fun isBroken() = broken
-        override fun setBroken(broken: Boolean) { this.broken = broken }
     }
 
     private class WaitingChallengeService : ChallengeService {

@@ -15,20 +15,6 @@ object PinChecker {
     fun matches(expected: String, certificate: X509Certificate): Boolean =
         expected == pin(certificate)
 
-    fun mangle(baseline: String): String {
-        val payload = baseline.removePrefix(PREFIX)
-        if (payload.isEmpty()) {
-            return baseline
-        }
-        val index = payload.length / 2
-        val replacement = when (payload[index]) {
-            'A' -> 'B'
-            'B' -> 'C'
-            else -> 'A'
-        }
-        return PREFIX + payload.replaceRange(index, index + 1, replacement.toString())
-    }
-
     fun isWellFormed(pin: String): Boolean {
         if (!pin.startsWith(PREFIX)) {
             return false

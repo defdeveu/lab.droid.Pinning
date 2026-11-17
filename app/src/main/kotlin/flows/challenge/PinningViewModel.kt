@@ -30,16 +30,15 @@ data class PinningUiState(
 
 class PinningViewModel(
     private val service: PinningService,
-    private val store: PinStore,
     private val pinnedUrl: String,
     private val cleartextUrl: String,
-    private val pinnedPin: String,
+    pinnedPin: String,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
     configurationError: LabError? = null,
 ) : ViewModel() {
     private val mutableUiState = MutableStateFlow(
         PinningUiState(
-            expectedPin = if (store.isBroken()) PinChecker.mangle(pinnedPin) else pinnedPin,
+            expectedPin = pinnedPin,
             configurationError = configurationError,
         ),
     )
@@ -53,18 +52,6 @@ class PinningViewModel(
 
     fun tryCleartext() {
         fetch(cleartextUrl)
-    }
-
-    fun breakPin() {
-        if (mutableUiState.value.isRunning) return
-        mutableUiState.update { it.copy(expectedPin = PinChecker.mangle(pinnedPin)) }
-        store.setBroken(true)
-    }
-
-    fun restorePin() {
-        if (mutableUiState.value.isRunning) return
-        mutableUiState.update { it.copy(expectedPin = pinnedPin) }
-        store.setBroken(false)
     }
 
     fun cancel() {

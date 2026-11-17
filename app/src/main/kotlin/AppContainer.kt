@@ -6,7 +6,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import defdev.labs.droid.pinning.config.LabConfiguration
 import defdev.labs.droid.pinning.error.LabError
-import defdev.labs.droid.pinning.flows.challenge.FilePinStore
 import defdev.labs.droid.pinning.flows.challenge.PinChecker
 import defdev.labs.droid.pinning.flows.challenge.PlatformPinningService
 import defdev.labs.droid.pinning.flows.solution.OkHttpPinningService
@@ -14,7 +13,6 @@ import defdev.labs.droid.pinning.flows.solution.PinnedSet
 import defdev.labs.droid.pinning.flows.solution.PinnedSetReader
 import defdev.labs.droid.pinning.flows.challenge.PinningViewModel as ChallengeViewModel
 import defdev.labs.droid.pinning.flows.solution.PinningViewModel as SolutionViewModel
-import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -30,7 +28,6 @@ class AppContainer(context: Context) {
         initializer {
             ChallengeViewModel(
                 service = PlatformPinningService(),
-                store = FilePinStore(File(context.filesDir, "pin-state")),
                 pinnedUrl = BuildConfig.LAB_PINNING_URL,
                 cleartextUrl = BuildConfig.LAB_CLEARTEXT_URL,
                 pinnedPin = BuildConfig.LAB_LEAF_PIN,

@@ -17,8 +17,6 @@
     <string name="section_status">Status</string>
     <string name="section_last_attempt">Last attempt</string>
     <string name="action_connect">Connect</string>
-    <string name="action_break_pin">Break the pin</string>
-    <string name="action_restore_pin">Restore the pin</string>
     <string name="action_try_cleartext">Try cleartext</string>
     <string name="status_ready">Ready</string>
     <string name="status_connecting">Connecting…</string>

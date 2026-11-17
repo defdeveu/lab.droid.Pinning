@@ -9,7 +9,6 @@ import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
-import defdev.labs.droid.pinning.flows.challenge.PinChecker
 import org.junit.Rule
 import org.junit.Test
 
@@ -43,20 +42,4 @@ class PinningScreenTest {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun breakAndRestoreUpdateTheExpectedIdentity() {
-        composeRule
-            .onNodeWithText(text(R.string.action_break_pin))
-            .performClick()
-        composeRule
-            .onNodeWithText(PinChecker.mangle(BuildConfig.LAB_LEAF_PIN))
-            .assertIsDisplayed()
-
-        composeRule
-            .onNodeWithText(text(R.string.action_restore_pin))
-            .performClick()
-        composeRule
-            .onNodeWithText(BuildConfig.LAB_LEAF_PIN)
-            .assertIsDisplayed()
-    }
 }
