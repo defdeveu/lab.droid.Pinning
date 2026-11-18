@@ -7,6 +7,9 @@ plugins {
 
 val labProperties = Properties().apply {
     rootProject.file("lab.properties").inputStream().use { load(it) }
+}
+val hostedH3Url = labProperties.getProperty("lab.h3.url", "")
+labProperties.apply {
     rootProject.file("lab.local.properties").takeIf { it.exists() }
         ?.inputStream()?.use { load(it) }
 }
@@ -23,10 +26,12 @@ android {
     defaultConfig {
         applicationId = "defdev.labs.droid.pinning"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "LAB_H3_URL", literal(labValue("lab.h3.url")))
+        buildConfigField("String", "LAB_H3_HOSTED_URL", literal(hostedH3Url))
         buildConfigField(
             "String",
             "LAB_SOLUTION_URL",
@@ -57,8 +62,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
     }
 
     buildFeatures {

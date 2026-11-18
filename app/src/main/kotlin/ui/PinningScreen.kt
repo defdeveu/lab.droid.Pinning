@@ -32,8 +32,10 @@ fun PinningScreen(
     selected: FlowId,
     onSelect: (FlowId) -> Unit,
     isRunning: Boolean,
+    h3Available: Boolean,
     challenge: @Composable (Boolean) -> Unit,
     solution: @Composable (Boolean) -> Unit,
+    solutionH3: @Composable (Boolean) -> Unit,
 ) {
     val motion = MaterialTheme.motionScheme.defaultSpatialSpec<IntOffset>()
     Scaffold(topBar = { LabHeader() }) { insets ->
@@ -47,8 +49,8 @@ fun PinningScreen(
                     val label = stringResource(flow.titleRes())
                     WideNavigationRailItem(
                         selected = selected == flow,
-                        onClick = { if (!isRunning) onSelect(flow) },
-                        enabled = !isRunning,
+                        onClick = { if (!isRunning && (flow != FlowId.SOLUTION_H3 || h3Available)) onSelect(flow) },
+                        enabled = !isRunning && (flow != FlowId.SOLUTION_H3 || h3Available),
                         icon = {
                             Text(stringResource(flow.markerRes()),
                                 style = MaterialTheme.typography.titleMediumEmphasized, fontSize = 20.sp)
@@ -75,6 +77,7 @@ fun PinningScreen(
                 when (page) {
                     FlowId.CHALLENGE -> challenge(page == selected)
                     FlowId.SOLUTION -> solution(page == selected)
+                    FlowId.SOLUTION_H3 -> solutionH3(page == selected)
                 }
             }
         }
@@ -84,9 +87,11 @@ fun PinningScreen(
 private fun FlowId.titleRes() = when (this) {
     FlowId.CHALLENGE -> R.string.flow_challenge_title
     FlowId.SOLUTION -> R.string.flow_solution_title
+    FlowId.SOLUTION_H3 -> R.string.flow_solution_h3_title
 }
 
 private fun FlowId.markerRes() = when (this) {
     FlowId.CHALLENGE -> R.string.flow_challenge_marker
     FlowId.SOLUTION -> R.string.flow_solution_marker
+    FlowId.SOLUTION_H3 -> R.string.flow_solution_h3_marker
 }

@@ -5,6 +5,10 @@
     <string name="flow_solution_title">Solution</string>
     <string name="flow_challenge_marker">C</string>
     <string name="flow_solution_marker">S</string>
+    <string name="flow_solution_h3_title">Solution HTTP/3</string>
+    <string name="flow_solution_h3_marker">3</string>
+    <string name="solution_h3_supporting">Connect to %1$s over HTTP/3 using the configured authority keys.</string>
+    <string name="error_http3_required">The server did not use HTTP/3.</string>
     <string name="action_cancel_request">Cancel request</string>
     <string name="status_cancelled">Cancelled</string>
     <string name="solution_supporting">Transport security is narrowed in the network security configuration: the system accepts a connection to %1$s only when the chain it presents contains one of the configured authority keys.</string>

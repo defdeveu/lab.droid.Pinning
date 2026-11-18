@@ -13,5 +13,7 @@ sealed class LabError {
 
     data object TransportFailed : LabError()
 
+    data object Http3Required : LabError()
+
     data class ServerStatus(val status: Int) : LabError()
 }

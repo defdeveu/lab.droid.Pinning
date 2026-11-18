@@ -104,6 +104,7 @@ private fun LabError.messageRes() = when (this) {
     LabError.TrustFailed -> R.string.error_trust_failed
     LabError.InvalidUrl -> R.string.error_invalid_url
     LabError.TransportFailed -> R.string.error_transport_failed
+    LabError.Http3Required -> R.string.error_http3_required
     is LabError.ServerStatus -> R.string.error_server_status
 }
 
